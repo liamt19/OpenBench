@@ -20,20 +20,17 @@
         "UHO_4060_v2.epd",
         "UHO_4060_vB.epd",
         "UHO_4060_vT.epd",
-        "UHO_Lichess_4852_v1.epd"
+        "UHO_Lichess_4852_v1.epd",
+        "4moves_v1_shogi.epd"
     ],
 
     "engines" : [
-        "Alexandria",
-        "BlackMarlin",
         "Horsie",
         "Integral",
         "Lizard",
-        "Obsidian",
+        "Peeper",
         "PlentyChess",
-        "Seer",
-        "Spaghet",
-        "Stash",
+        "Stoat",
         "Stormphrax",
         "Viridithas"
     ]

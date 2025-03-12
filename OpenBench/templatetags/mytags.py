@@ -56,11 +56,11 @@ def gitDiffLink(test):
         return OpenBench.utils.path_join(repo, 'compare', test.dev.sha[:8])
 
     return OpenBench.utils.path_join(repo, 'compare',
-        '{0}..{1}'.format( test.base.sha[:8], test.dev.sha[:8]))
+        '{0}...{1}'.format( test.base.sha[:8], test.dev.sha[:8]))
 
 def shortStatBlock(test):
-
-    tri_line   = 'Games: %d W: %d L: %d D: %d' % test.as_nwld()
+    win_percentage = round(((test.wins + (float(test.draws) / 2)) / float(max(1,test.games))) * 100, 3)
+    tri_line   = 'Games: %d W: %d L: %d D: %d' % test.as_nwld() + f' [{win_percentage}%]'
     penta_line = 'Ptnml(0-2): %d, %d, %d, %d, %d' % test.as_penta()
 
     if test.test_mode == 'SPSA':
@@ -136,7 +136,7 @@ def prettyName(name):
         return name[:16].upper()
     return name
 
-def prettyDevName(test):
+def _prettyDevName(test):
 
     # If engines are different, use the base name + branch
     if test.dev_engine != test.base_engine:
@@ -152,6 +152,28 @@ def prettyDevName(test):
         # Use the network's name, if we still have it saved
         try: return OpenBench.models.Network.objects.get(sha256=test.dev_network).name
         except: return test.dev_netname # File has since been deleted ?
+
+    return prettyName(test.dev.name)
+
+def prettyDevName(test):
+
+    # If engines are different, use the base name + branch
+    if test.dev_engine != test.base_engine:
+        return '%s vs [%s] %s' % (test.dev.name, test.base_engine, test.base.name)
+
+    # If testing different Networks, possibly use the Network name
+    if test.dev.name == test.base.name and test.dev_netname != '':
+
+        # Nets match as well, so revert back to the branch name
+        if test.dev_network == test.base_network:
+            return prettyName(test.dev.name)
+
+        # Use the network's name, if we still have it saved
+        try: return OpenBench.models.Network.objects.get(sha256=test.dev_network).name
+        except: return test.dev_netname # File has since been deleted ?
+
+    if test.base.name != 'main' and test.base.name != 'master':
+        return '%s vs %s' % (test.dev.name, test.base.name)
 
     return prettyName(test.dev.name)
 
@@ -367,6 +389,8 @@ def test_is_time_odds(test):
 def test_is_fischer(test):
     return 'FRC' in test.book_name.upper() or '960' in test.book_name.upper()
 
+def test_is_shogi(test):
+    return 'SHOGI' in test.book_name.upper()
 
 register.filter('spsa_param_digest', spsa_param_digest)
 register.filter('spsa_param_digest_headers', spsa_param_digest_headers)
@@ -384,6 +408,7 @@ register.filter('git_diff_text', git_diff_text)
 register.filter('test_is_smp_odds'  , test_is_smp_odds  )
 register.filter('test_is_time_odds' , test_is_time_odds )
 register.filter('test_is_fischer'   , test_is_fischer   )
+register.filter('test_is_shogi'     , test_is_shogi     )
 
 
 @register.filter

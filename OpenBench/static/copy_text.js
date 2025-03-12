@@ -5,7 +5,7 @@ function copy_text(element_id, keep_url) {
     text = text.replace(/<br>/g, "\n");
 
     if (keep_url)
-        text += "\n" + window.location.href;
+        text = "\`\`\`\n" + text + "\n\`\`\`" + "\n" + window.location.href;
 
     var area = document.createElement("textarea");
     area.value = text;
