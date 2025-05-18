@@ -1,11 +1,11 @@
 {
     "private" : false,
-    "nps"     : 1600000,
-    "source"  : "https://github.com/liamt19/Horsie",
+    "nps"     : 1200000,
+    "source"  : "https://github.com/liamt19/AwesomeOpossum",
 
     "build" : {
         "path"      : "",
-        "compilers" : ["clang++", "g++"],
+        "compilers" : ["dotnet"],
         "cpuflags"  : ["AVX2"],
         "systems"   : ["Windows", "Linux"]
     },
@@ -35,12 +35,14 @@
             "both_options"      : "Threads=1 Hash=32",
             "both_time_control" : "8.0+0.08",
             "book_name"         : "DFRC.epd",
-            "workload_size"     : 30
+            "workload_size"     : 30,
+            "test_bounds"       : "[0.00, 3.00]"
         },
         "STC" : {
             "both_options"      : "Threads=1 Hash=32",
             "both_time_control" : "8.0+0.08",
-            "workload_size"     : 30
+            "workload_size"     : 30,
+            "test_bounds"       : "[0.00, 3.00]"
         },
         "LTC" : {
             "both_options"      : "Threads=1 Hash=128",
@@ -52,12 +54,19 @@
             "both_time_control" : "60.0+0.6",
             "workload_size"     : 12
         },
-        "Nonreg" : {
-            "test_bounds"     : "[-5.00, 0.00]"
-        },
-        "Progtest" : {
+        "STC Prog" : {
+            "both_options"      : "Threads=1 Hash=32",
+            "both_time_control" : "8.0+0.08",
             "book_name"         : "8moves_v3.epd",
+            "workload_size"     : 30,
             "test_max_games"    : 2000
+        },
+        "VLTC Prog" : {
+            "both_options"      : "Threads=1 Hash=128",
+            "both_time_control" : "60.0+0.6",
+            "book_name"         : "8moves_v3.epd",
+            "workload_size"     : 12,
+            "test_max_games"    : 1000
         }
     },
 
